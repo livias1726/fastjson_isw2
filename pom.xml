@@ -15,6 +15,10 @@
 
         <sonar.organization>livias1726</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.log.level>DEBUG</sonar.log.level>
+        <sonar.verbose>true</sonar.verbose>
+        <sonar.jacoco.reportPaths>${basedir}\\target\\jacoco.exec</sonar.jacoco.reportPaths>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
     </properties>
 
     <build>
