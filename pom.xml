@@ -18,24 +18,6 @@
     </properties>
 
     <build>
-        <!--
-        <resources>
-            <resource>
-                <directory>src/main/resources/test-conf</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.ccf</include>
-                </includes>
-            </resource>
-
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.java</include>
-                </includes>
-            </resource>
-        </resources>
-        -->
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>src/test</testSourceDirectory>
         <plugins>
@@ -51,7 +33,7 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.7</version>
-                <!--
+
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -78,12 +60,6 @@
                       </configuration>
                     </execution>
                 </executions>
-                   <configuration>
-                        <systemPropertyVariables>
-                            <jacoco-agent.destfile>target/jacoco/jacoco.exec</jacoco-agent.destfile>
-                        </systemPropertyVariables>
-                  </configuration>
-                  -->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -107,7 +83,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.2</version>
+            <version>4.13.2</version>
         </dependency>
     </dependencies>
 </project>
