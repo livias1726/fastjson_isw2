@@ -10,24 +10,32 @@
     <name>fastjson_isw2</name>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!--
+        <!-- Maven -->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        -->
+
+        <!-- Sonar -->
         <sonar.organization>livias1726</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.log.level>DEBUG</sonar.log.level>
-        <sonar.verbose>true</sonar.verbose>
-        <sonar.jacoco.reportPaths>${basedir}\\target\\jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.jacoco.reportPath>target/coverage-reports/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.language>java</sonar.language>
     </properties>
 
     <build>
-        <sourceDirectory>src/main</sourceDirectory>
-        <testSourceDirectory>src/test</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M4</version>
+                <configuration>
+                    <argLine>
+                        -javaagent:jars/jacoco/jacocoagent.jar=destfile=target/coverage-reports/jacoco.exec
+                    </argLine>
+                    <reportsDirectory>target/coverage-reports/surefire-reports</reportsDirectory>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
@@ -36,61 +44,67 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <!-- GET FASTJSON CLASSES FROM JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>instrumentation</id>
+                        <goals>
+                            <goal>testResources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>lib</directory>
+                                </resource>
+                            </resources>
+                            <outputDirectory>target/classes</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.7</version>
-
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <configuration>
-                            <dataFile>target/jacoco/jacoco.exec</dataFile>
-                            <outputDirectory>target/reports</outputDirectory>
-                      </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M4</version>
-                <configuration>
-                    <argLine>
-                        -javaagent:lib/jacocoagent.jar=destfile=target/jacoco/jacoco.exec
-                    </argLine>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+                       </goals>
+                   </execution>
+                   <execution>
+                       <id>report</id>
+                       <phase>test</phase>
+                       <goals>
+                           <goal>report</goal>
+                       </goals>
+                       <configuration>
+                           <dataFile>target/coverage-reports/jacoco.exec</dataFile>
+                           <outputDirectory>target/coverage-reports/jacoco-reports</outputDirectory>
+                       </configuration>
+                   </execution>
+               </executions>
+           </plugin>
+       </plugins>
+   </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.79</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-        </dependency>
-    </dependencies>
+   <dependencies>
+       <dependency>
+           <groupId>com.alibaba</groupId>
+           <artifactId>fastjson</artifactId>
+           <version>1.2.79</version>
+       </dependency>
+       <dependency>
+           <groupId>junit</groupId>
+           <artifactId>junit</artifactId>
+           <version>4.13.2</version>
+       </dependency>
+   </dependencies>
 </project>
