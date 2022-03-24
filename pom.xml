@@ -10,6 +10,8 @@
     <name>fastjson_isw2</name>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <!-- Maven -->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -18,8 +20,7 @@
         <sonar.organization>livias1726</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.jacoco.reportPath>target/coverage-reports/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.language>java</sonar.language>
+        <sonar.jacoco.reportPath>target/coverage-reports/jacoco-reports/jacoco.xml</sonar.jacoco.reportPath>
     </properties>
 
     <build>
@@ -33,15 +34,6 @@
                         -javaagent:jars/jacoco/jacocoagent.jar=destfile=target/coverage-reports/jacoco.exec
                     </argLine>
                     <reportsDirectory>target/coverage-reports/surefire-reports</reportsDirectory>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
                 </configuration>
             </plugin>
 
