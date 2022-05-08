@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.util.TypeUtils;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -28,8 +27,8 @@ public class TypeUtilsParameterizedTest {
     @RunWith(Parameterized.class)
     public static class TypeUtils0Test {
         private final Object expected;
-        private final Object value2;
-        private final Class<Map> value3;
+        private final Object value1;
+        private final Class<Map> value2;
 
         @Parameterized.Parameters
         public static Collection<Object[]> getTestParameters() {
@@ -44,20 +43,21 @@ public class TypeUtilsParameterizedTest {
             return Arrays.asList(params);
         }
 
-        public TypeUtils0Test(Object value1, Object value2, Class<Map> value3) {
-            this.expected = value1;
-            this.value2 = value2;
-            this.value3 = value3;
+        public TypeUtils0Test(Object param1, Object param2, Class<Map> param3) {
+            this.expected = param1;
+            this.value1 = param2;
+            this.value2 = param3;
         }
 
         @Test
         public void test_0() {
-            Assert.assertTrue(expected == TypeUtils.castToJavaBean(value2, value3));
+            Assert.assertTrue(expected == TypeUtils.castToJavaBean(value1, value2));
         }
     }
 
     /* *
      * test_2
+     * test_3
      * */
     @RunWith(Parameterized.class)
     public static class TypeUtils2Test {
@@ -76,21 +76,21 @@ public class TypeUtilsParameterizedTest {
             return Arrays.asList(params);
         }
 
-        public TypeUtils2Test(long expected1, String expected2, Class<User> value2) {
-            configureTest2(expected1, expected2, value2);
+        public TypeUtils2Test(long param1, String param2, Class<User> param3) {
+            configure(param1, param2, param3);
         }
 
-        public void configureTest2(long expected1, String expected2, Class<User> value2) {
+        public void configure(long param1, String param2, Class<User> param3) {
             JSONObject localParam = new JSONObject();
 
             localParam.put("id", 1);
             localParam.put("name", "panlei");
 
             //Params
-            this.expected1 = expected1;
+            this.expected1 = param1;
             this.value1 = localParam;
-            this.expected2 = expected2;
-            this.value2 = value2;
+            this.expected2 = param2;
+            this.value2 = param3;
         }
 
         @Test
@@ -99,6 +99,36 @@ public class TypeUtilsParameterizedTest {
 
             Assert.assertEquals(expected1, user.getId());
             Assert.assertEquals(expected2, user.getName());
+        }
+
+        @Test
+        public void test_3() {
+            User user = JSON.toJavaObject(value1, value2);
+
+            Assert.assertEquals(expected1, user.getId());
+            Assert.assertEquals(expected2, user.getName());
+        }
+
+        public static class User {
+
+            private long id;
+            private String name;
+
+            public long getId() {
+                return id;
+            }
+
+            public void setId(long id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
         }
     }
 
@@ -200,6 +230,18 @@ public class TypeUtilsParameterizedTest {
         @Test
         public void test_cast() {
             Assert.assertEquals(expected, json.getObject(value1, value2));
+        }
+
+        public static class A implements IA {
+
+        }
+
+        public static interface IA {
+
+        }
+
+        public static class B extends A {
+
         }
     }
 
@@ -327,6 +369,18 @@ public class TypeUtilsParameterizedTest {
                 error = e;
             }
             Assert.assertNotNull(error);
+        }
+
+        public static class A implements IA {
+
+        }
+
+        public static interface IA {
+
+        }
+
+        public static class B extends A {
+
         }
     }
 
@@ -575,6 +629,29 @@ public class TypeUtilsParameterizedTest {
             }
             Assert.assertNotNull(error);
         }
+
+        public static class A implements IA {
+
+        }
+
+        public static interface IA {
+
+        }
+
+        public static class B extends A {
+
+        }
+
+        public static class C extends B {
+
+            public int getId() {
+                throw new UnsupportedOperationException();
+            }
+
+            public void setId(int id) {
+                throw new UnsupportedOperationException();
+            }
+        }
     }
 
     // test_error_2
@@ -606,7 +683,7 @@ public class TypeUtilsParameterizedTest {
 
             this.json = localParam;
 
-            Method method = TypeUtilsParameterizedTest.class.getMethod(param3, param4);
+            Method method = TypeUtilsError2Test.class.getMethod(param3, param4);
             this.value1 = method.getGenericParameterTypes()[0];
 
             this.value2 = ParserConfig.getGlobalInstance();
@@ -622,105 +699,9 @@ public class TypeUtilsParameterizedTest {
             }
             Assert.assertNotNull(error);
         }
-    }
 
-    // test_3
-    @RunWith(Parameterized.class)
-    public static class TypeUtils3Test {
+        public static void f(List<?> list) {
 
-        private long expected1;
-        private JSONObject value1;
-        private String expected2;
-        private Class<User> value2;
-
-        @Parameterized.Parameters
-        public static Collection<Object[]> getTestParameters() {
-            Object[][] params = {
-                    {1L, "panlei", User.class}
-            };
-
-            return Arrays.asList(params);
         }
-
-        public TypeUtils3Test(long param1, String param2, Class<User> param3) {
-            configureTest2(param1, param2, param3);
-        }
-
-        public void configureTest2(long expected1, String expected2, Class<User> value2) {
-            JSONObject localParam = new JSONObject();
-
-            localParam.put("id", 1);
-            localParam.put("name", "panlei");
-
-            //Params
-            this.expected1 = expected1;
-            this.value1 = localParam;
-            this.expected2 = expected2;
-            this.value2 = value2;
-        }
-
-        @Test
-        public void test_3() {
-            User user = JSON.toJavaObject(value1, value2);
-
-            Assert.assertEquals(expected1, user.getId());
-            Assert.assertEquals(expected2, user.getName());
-        }
-    }
-
-    //--------------------------------------------- SUPPORT CLASSES ------------------------------------------------
-    @Ignore
-    public static class User {
-
-        private long id;
-        private String name;
-
-        public long getId() {
-            return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
-    @Ignore
-    public static class A implements TypeUtilsParameterizedTest.IA {
-
-    }
-
-    @Ignore
-    public static interface IA {
-
-    }
-
-    @Ignore
-    public static class B extends TypeUtilsParameterizedTest.A {
-
-    }
-
-    @Ignore
-    public static class C extends TypeUtilsParameterizedTest.B {
-
-        public int getId() {
-            throw new UnsupportedOperationException();
-        }
-
-        public void setId(int id) {
-            throw new UnsupportedOperationException();
-        }
-    }
-
-    @Ignore
-    public static void f(List<?> list) {
-
     }
 }
