@@ -20,12 +20,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class TypeUtilsParameterizedTest {
 
-    /* *
-     * test_0
-     * test_1
-     * */
     @RunWith(Parameterized.class)
-    public static class TypeUtils0Test {
+    public static class TypeUtilsCastToJavaBeanTest {
+
         private final Object expected;
         private final Object value1;
         private final Class<Map> value2;
@@ -36,31 +33,27 @@ public class TypeUtilsParameterizedTest {
             JSONObject json;
 
             Object[][] params = {
-                    {map = new HashMap(), map, Map.class}, //test_0
-                    {json = new JSONObject(), json, Map.class}, //test_1
+                {map = new HashMap(), map, Map.class}, //test_0
+                {json = new JSONObject(), json, Map.class}, //test_1
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtils0Test(Object param1, Object param2, Class<Map> param3) {
+        public TypeUtilsCastToJavaBeanTest(Object param1, Object param2, Class<Map> param3) {
             this.expected = param1;
             this.value1 = param2;
             this.value2 = param3;
         }
 
         @Test
-        public void test_0() {
+        public void test_castToJavaBean() {
             Assert.assertTrue(expected == TypeUtils.castToJavaBean(value1, value2));
         }
     }
 
-    /* *
-     * test_2
-     * test_3
-     * */
     @RunWith(Parameterized.class)
-    public static class TypeUtils2Test {
+    public static class TypeUtilsUserTest {
         private long expected1;
         private String expected2;
         private JSONObject value1;
@@ -70,13 +63,13 @@ public class TypeUtilsParameterizedTest {
         public static Collection<Object[]> getTestParameters() {
 
             Object[][] params = {
-                    {1L, "panlei", User.class} //test_2
+                {1L, "panlei", User.class} //test_2, test_3
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtils2Test(long param1, String param2, Class<User> param3) {
+        public TypeUtilsUserTest(long param1, String param2, Class<User> param3) {
             configure(param1, param2, param3);
         }
 
@@ -132,38 +125,12 @@ public class TypeUtilsParameterizedTest {
         }
     }
 
-    /* *
-     * test_cast_Integer
-     * test_cast_Integer_2
-     * test_cast_to_long
-     * test_cast_to_Long
-     * test_cast_to_short
-     * test_cast_to_Short
-     * test_cast_to_byte
-     * test_cast_to_Byte
-     * test_cast_to_BigInteger
-     * test_cast_to_BigDecimal
-     * test_cast_to_boolean
-     * test_cast_to_Boolean
-     * test_cast_null
-     * test_cast_to_String
-     * test_cast_to_Date
-     * test_cast_to_SqlDate
-     * test_cast_to_SqlDate_string
-     * test_cast_to_SqlDate_null
-     * test_cast_to_SqlDate_util_Date
-     * test_cast_to_SqlDate_sql_Date
-     * test_cast_to_Timestamp
-     * test_cast_to_Timestamp_string
-     * test_cast_to_Timestamp_number
-     * test_cast_to_Timestamp_null
-     * test_cast_to_Timestamp_util_Date
-     * test_cast_to_Timestamp_sql_Date
-     * test_cast_ab
-     * test_cast_ab_1
-     * */
     @RunWith(Parameterized.class)
-    public static class TypeUtilsCastTest {
+    public static class TypeUtilsGetObjectTest {
+
+        public enum Type {CAST, CALENDAR}
+
+        private final Type type;
 
         private Object expected;
         private String value1;
@@ -177,47 +144,58 @@ public class TypeUtilsParameterizedTest {
             B b;
 
             Object[][] params = {
-                    {1L, "id", 1, int.class}, //test_cast_Integer
-                    {1L, "id", 1, Integer.class}, //test_cast_Integer_2
-                    {1, "id", 1L, long.class}, //test_cast_to_long
-                    {1, "id", 1L, Long.class}, //test_cast_to_Long
-                    {1, "id", (short) 1, short.class}, //test_cast_to_short
-                    {1, "id", (short) 1, Short.class}, //test_cast_to_Short
-                    {1, "id", (byte) 1, byte.class}, //test_cast_to_byte
-                    {1, "id", (byte) 1, Byte.class}, //test_cast_to_Byte
-                    {1, "id", new BigInteger("1"), BigInteger.class}, //test_cast_to_BigInteger
-                    {1, "id", new BigDecimal("1"), BigDecimal.class}, //test_cast_to_BigDecimal
-                    {1, "id", Boolean.TRUE, boolean.class}, //test_cast_to_boolean
-                    {1, "id", Boolean.TRUE, Boolean.class}, //test_cast_to_Boolean
-                    {null, "id", null, Boolean.class}, //test_cast_null
-                    {1, "id", "1", String.class}, //test_cast_to_String
-                    {millis = System.currentTimeMillis(), "date", new Date(millis), Date.class}, //test_cast_to_Date
-                    {millis = System.currentTimeMillis(), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate
-                    {Long.toString(millis = System.currentTimeMillis()), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate_string
-                    {null, "date", null, java.sql.Date.class}, //test_cast_to_SqlDate_null
-                    {new Date(millis = System.currentTimeMillis()), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate_util_Date
-                    {new java.sql.Date(millis = System.currentTimeMillis()), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate_sql_Date
-                    {millis = System.currentTimeMillis(), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp
-                    {Long.toString(millis = System.currentTimeMillis()), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp_string
-                    {new BigDecimal(Long.toString(millis = System.currentTimeMillis())), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp_number
-                    {null, "date", null, java.sql.Timestamp.class}, //test_cast_to_Timestamp_null
-                    {new Date(millis = System.currentTimeMillis()), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp_util_Date
-                    {new java.sql.Date(millis = System.currentTimeMillis()), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp_sql_Date
-                    {b = new B(), "value", b, A.class}, //test_cast_ab
-                    {b = new B(), "value", b, IA.class}, //test_cast_ab_1
+                {Type.CAST, 1L, "id", 1, int.class}, //test_cast_Integer
+                {Type.CAST, 1L, "id", 1, Integer.class}, //test_cast_Integer_2
+                {Type.CAST, 1, "id", 1L, long.class}, //test_cast_to_long
+                {Type.CAST, 1, "id", 1L, Long.class}, //test_cast_to_Long
+                {Type.CAST, 1, "id", (short) 1, short.class}, //test_cast_to_short
+                {Type.CAST, 1, "id", (short) 1, Short.class}, //test_cast_to_Short
+                {Type.CAST, 1, "id", (byte) 1, byte.class}, //test_cast_to_byte
+                {Type.CAST, 1, "id", (byte) 1, Byte.class}, //test_cast_to_Byte
+                {Type.CAST, 1, "id", new BigInteger("1"), BigInteger.class}, //test_cast_to_BigInteger
+                {Type.CAST, 1, "id", new BigDecimal("1"), BigDecimal.class}, //test_cast_to_BigDecimal
+                {Type.CAST, 1, "id", Boolean.TRUE, boolean.class}, //test_cast_to_boolean
+                {Type.CAST, 1, "id", Boolean.TRUE, Boolean.class}, //test_cast_to_Boolean
+                {Type.CAST, null, "id", null, Boolean.class}, //test_cast_null
+                {Type.CAST, 1, "id", "1", String.class}, //test_cast_to_String
+                {Type.CAST, millis = System.currentTimeMillis(), "date", new Date(millis), Date.class}, //test_cast_to_Date
+                {Type.CAST, millis = System.currentTimeMillis(), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate
+                {Type.CAST, Long.toString(millis = System.currentTimeMillis()), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate_string
+                {Type.CAST, null, "date", null, java.sql.Date.class}, //test_cast_to_SqlDate_null
+                {Type.CAST, new Date(millis = System.currentTimeMillis()), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate_util_Date
+                {Type.CAST, new java.sql.Date(millis = System.currentTimeMillis()), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate_sql_Date
+                {Type.CAST, millis = System.currentTimeMillis(), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp
+                {Type.CAST, Long.toString(millis = System.currentTimeMillis()), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp_string
+                {Type.CAST, new BigDecimal(Long.toString(millis = System.currentTimeMillis())), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp_number
+                {Type.CAST, null, "date", null, java.sql.Timestamp.class}, //test_cast_to_Timestamp_null
+                {Type.CAST, new Date(millis = System.currentTimeMillis()), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp_util_Date
+                {Type.CAST, new java.sql.Date(millis = System.currentTimeMillis()), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}, //test_cast_to_Timestamp_sql_Date
+                {Type.CAST, b = new B(), "value", b, A.class}, //test_cast_ab
+                {Type.CAST, b = new B(), "value", b, IA.class}, //test_cast_ab_1
+                {Type.CALENDAR, millis = System.currentTimeMillis(), "date", new java.sql.Date(millis), java.sql.Date.class}, //test_cast_to_SqlDate_calendar
+                {Type.CALENDAR, millis = System.currentTimeMillis(), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class} //test_cast_to_Timestamp_calendar
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtilsCastTest(Object param1, String param2, Object param3, Class<?> param4) {
-            configureTestCast(param1, param2, param3, param4);
+        public TypeUtilsGetObjectTest(Type type, Object param1, String param2, Object param3, Class<?> param4) {
+            this.type = type;
+
+            configure(param1, param2, param3, param4);
         }
 
-        public void configureTestCast(Object param1, String param2, Object param3, Class<?> param4) {
+        public void configure(Object param1, String param2, Object param3, Class<?> param4) {
             JSONObject localParam = new JSONObject();
 
-            localParam.put(param2, param1);
+            if(type.equals(Type.CALENDAR)) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis((Long) param1);
+
+                localParam.put(param2, calendar);
+            }else {
+                localParam.put(param2, param1);
+            }
 
             //Params
             this.expected = param3;
@@ -228,7 +206,7 @@ public class TypeUtilsParameterizedTest {
         }
 
         @Test
-        public void test_cast() {
+        public void test_getObject() {
             Assert.assertEquals(expected, json.getObject(value1, value2));
         }
 
@@ -245,12 +223,8 @@ public class TypeUtilsParameterizedTest {
         }
     }
 
-    /* *
-     * test_cast_to_SqlDate_null2
-     * test_cast_to_SqlDate_sql_Date2
-     * */
     @RunWith(Parameterized.class)
-    public static class TypeUtilsCastSqlDateTest {
+    public static class TypeUtilsCastToSqlDateTest {
         private final java.sql.Date expected;
         private final java.sql.Date value;
 
@@ -259,78 +233,26 @@ public class TypeUtilsParameterizedTest {
             java.sql.Date date;
 
             Object[][] params = {
-                    {null, null}, //test_cast_to_SqlDate_null2
-                    {date = new java.sql.Date(System.currentTimeMillis()), date}, //test_cast_to_SqlDate_sql_Date2
+                {null, null}, //test_cast_to_SqlDate_null2
+                {date = new java.sql.Date(System.currentTimeMillis()), date}, //test_cast_to_SqlDate_sql_Date2
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtilsCastSqlDateTest(java.sql.Date param1, java.sql.Date param2) {
+        public TypeUtilsCastToSqlDateTest(java.sql.Date param1, java.sql.Date param2) {
             this.expected = param1;
             this.value = param2;
         }
 
         @Test
-        public void test_cast_to_SqlDate() {
+        public void test_castToSqlDate() {
             Assert.assertEquals(expected, TypeUtils.castToSqlDate(value));
         }
     }
 
-    /* *
-     * test_cast_to_SqlDate_calendar
-     * test_cast_to_Timestamp_calendar
-     * */
     @RunWith(Parameterized.class)
-    public static class TypeUtilsCalendarTest {
-        private Object expected;
-        private String value1;
-        private Class<?> value2;
-        private JSONObject json;
-
-        @Parameterized.Parameters
-        public static Collection<Object[]> getTestParameters() {
-            long millis;
-
-            Object[][] params = {
-                    {millis = System.currentTimeMillis(), "date", new java.sql.Date(millis), java.sql.Date.class},
-                    {millis = System.currentTimeMillis(), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class}
-            };
-
-            return Arrays.asList(params);
-        }
-
-        public TypeUtilsCalendarTest(long param1, String param2, Object param3, Class<?> param4) {
-            configureTestCalendar(param1, param2, param3, param4);
-        }
-
-        public void configureTestCalendar(long param1, String param2, Object param3, Class<?> param4) {
-            JSONObject localParam = new JSONObject();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(param1);
-
-            localParam.put(param2, calendar);
-
-            //Params
-            this.expected = param3;
-            this.value1 = param2;
-            this.value2 = param4;
-
-            this.json = localParam;
-        }
-
-        @Test
-        public void test_calendar() {
-            Assert.assertEquals(expected, json.getObject(value1, value2));
-        }
-    }
-
-    /* *
-     * test_cast_to_SqlDate_error
-     * test_cast_ab_error
-     * */
-    @RunWith(Parameterized.class)
-    public static class TypeUtilsCastErrorTest {
+    public static class TypeUtilsJSONExceptionTest {
         private String value1;
         private Class<?> value2;
         private JSONObject json;
@@ -339,18 +261,18 @@ public class TypeUtilsParameterizedTest {
         public static Collection<Object[]> getTestParameters() {
 
             Object[][] params = {
-                    {"date", 0, java.sql.Date.class}, //test_cast_to_SqlDate_error
-                    {"value", new A(), B.class} //test_cast_ab_error
+                {"date", 0, java.sql.Date.class}, //test_cast_to_SqlDate_error
+                {"value", new A(), B.class} //test_cast_ab_error
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtilsCastErrorTest(String param1, Object param2, Class<?> param3) {
-            configureTestCastError(param1, param2, param3);
+        public TypeUtilsJSONExceptionTest(String param1, Object param2, Class<?> param3) {
+            configure(param1, param2, param3);
         }
 
-        public void configureTestCastError(String param1, Object param2, Class<?> param3) {
+        public void configure(String param1, Object param2, Class<?> param3) {
             JSONObject localParam = new JSONObject();
             localParam.put(param1, param2);
 
@@ -360,7 +282,7 @@ public class TypeUtilsParameterizedTest {
         }
 
         @Test
-        public void test_cast_error() {
+        public void test_JSONException() {
 
             JSONException error = null;
             try {
@@ -384,74 +306,51 @@ public class TypeUtilsParameterizedTest {
         }
     }
 
-    /* *
-     * test_cast_to_Timestamp_null2
-     * test_cast_to_Timestamp_sql_Timestamp
-     * */
     @RunWith(Parameterized.class)
-    public static class TypeUtilsCastTimestampTest {
-        private final Timestamp expected;
-        private final Timestamp value;
+    public static class TypeUtilsCastToTimestampTest {
+        public enum Type {TIMESTAMP, TIMEZONE}
+
+        private final Type type;
+
+        private Timestamp expected;
+        private Object value;
 
         @Parameterized.Parameters
         public static Collection<Object[]> getTestParameters() {
             Timestamp timestamp;
 
             Object[][] params = {
-                    {null, null}, //test_cast_to_Timestamp_null2
-                    {timestamp = new java.sql.Timestamp(System.currentTimeMillis()), timestamp} //test_cast_to_Timestamp_sql_Timestamp
+                {Type.TIMESTAMP, null, null}, //test_cast_to_Timestamp_null2
+                {Type.TIMESTAMP, timestamp = new java.sql.Timestamp(System.currentTimeMillis()), timestamp}, //test_cast_to_Timestamp_sql_Timestamp
+                {Type.TIMEZONE, new Timestamp(0), "1970-01-01 08:00:00"}, //test_cast_to_Timestamp_1970_01_01_00_00_00
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtilsCastTimestampTest(Timestamp param1, Timestamp param2) {
+        public TypeUtilsCastToTimestampTest(Type type, Timestamp param1, Object param2) {
+            this.type = type;
+
+            configure(param1, param2);
+        }
+
+        public void configure(Timestamp param1, Object param2) {
+            if(type.equals(Type.TIMEZONE)){
+                JSON.defaultTimeZone = TimeZone.getTimeZone("Asia/Shanghai");
+            }
+
             this.expected = param1;
             this.value = param2;
         }
 
         @Test
-        public void test_cast_to_Timestamp() {
+        public void test_castToTimestamp() {
             Assert.assertEquals(expected, TypeUtils.castToTimestamp(value));
         }
     }
 
-    //test_cast_to_Timestamp_1970_01_01_00_00_00
     @RunWith(Parameterized.class)
-    public static class TypeUtilsCastTimezoneTest {
-        private Timestamp expected;
-        private String value;
-
-        @Parameterized.Parameters
-        public static Collection<Object[]> getTestParameters() {
-
-            Object[][] params = {
-                    {"Asia/Shanghai", new Timestamp(0), "1970-01-01 08:00:00"}, //test_cast_to_Timestamp_1970_01_01_00_00_00
-            };
-
-            return Arrays.asList(params);
-        }
-
-        public TypeUtilsCastTimezoneTest(String param1, Timestamp param2, String param3) {
-            configureTestTimezone(param1, param2, param3);
-        }
-
-        public void configureTestTimezone(String param1, Timestamp param2, String param3) {
-            JSON.defaultTimeZone = TimeZone.getTimeZone(param1);
-
-            this.expected = param2;
-            this.value = param3;
-        }
-
-        @Test
-        public void test_cast_to_Timestamp_1970_01_01_00_00_00() {
-            Assert.assertEquals(expected, TypeUtils.castToTimestamp(value));
-        }
-    }
-
-    // test_cast_to_BigDecimal_same
-    @RunWith(Parameterized.class)
-    public static class TypeUtilsCastBigDecimalTest {
+    public static class TypeUtilsCastToBigDecimalTest {
 
         private final BigDecimal expected;
         private final BigDecimal value;
@@ -461,13 +360,13 @@ public class TypeUtilsParameterizedTest {
             BigDecimal bd;
 
             Object[][] params = {
-                    {bd = new BigDecimal("123"), bd}
+                {bd = new BigDecimal("123"), bd} //test_cast_to_BigDecimal_same
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtilsCastBigDecimalTest(BigDecimal param1, BigDecimal param2) {
+        public TypeUtilsCastToBigDecimalTest(BigDecimal param1, BigDecimal param2) {
             this.expected = param1;
             this.value = param2;
         }
@@ -478,9 +377,8 @@ public class TypeUtilsParameterizedTest {
         }
     }
 
-    //test_cast_to_BigInteger_same
     @RunWith(Parameterized.class)
-    public static class TypeUtilsCastBigIntegerTest {
+    public static class TypeUtilsCastToBigIntegerTest {
 
         private final BigInteger expected;
         private final BigInteger value;
@@ -490,13 +388,13 @@ public class TypeUtilsParameterizedTest {
             BigInteger bi;
 
             Object[][] params = {
-                    {bi = new BigInteger("123"), bi}
+                {bi = new BigInteger("123"), bi} //test_cast_to_BigInteger_same
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtilsCastBigIntegerTest(BigInteger param1, BigInteger param2) {
+        public TypeUtilsCastToBigIntegerTest(BigInteger param1, BigInteger param2) {
             this.expected = param1;
             this.value = param2;
         }
@@ -507,9 +405,8 @@ public class TypeUtilsParameterizedTest {
         }
     }
 
-    // test_cast_Array
     @RunWith(Parameterized.class)
-    public static class TypeUtilsCastArrayTest {
+    public static class TypeUtilsCastTest {
 
         private final Class<Integer[]> expected;
         private final ArrayList value1;
@@ -519,25 +416,24 @@ public class TypeUtilsParameterizedTest {
         public static Collection<Object[]> getTestParameters() {
 
             Object[][] params = {
-                    {Integer[].class, new ArrayList(), null}
+                    {Integer[].class, new ArrayList(), null} //test_cast_Array
             };
 
             return Arrays.asList(params);
         }
 
-        public TypeUtilsCastArrayTest(Class<Integer[]> param1, ArrayList param2, ParserConfig param3) {
+        public TypeUtilsCastTest(Class<Integer[]> param1, ArrayList param2, ParserConfig param3) {
             this.expected = param1;
             this.value1 = param2;
             this.value2 = param3;
         }
 
         @Test
-        public void test_cast_Array() {
+        public void test_cast() {
             Assert.assertEquals(expected, TypeUtils.cast(value1, expected, value2).getClass());
         }
     }
 
-    // test_cast_to_Timestamp_not_error
     @RunWith(Parameterized.class)
     public static class TypeUtilsNotErrorTest {
 
@@ -550,17 +446,17 @@ public class TypeUtilsParameterizedTest {
         public static Collection<Object[]> getTestParameters() {
 
             Object[][] params = {
-                    {"date", -1, java.sql.Timestamp.class, new Timestamp(-1L)}
+                {"date", -1, java.sql.Timestamp.class, new Timestamp(-1L)} //test_cast_to_Timestamp_not_error
             };
 
             return Arrays.asList(params);
         }
 
         public TypeUtilsNotErrorTest(String param1, int param2, Class<java.sql.Timestamp> param3, Timestamp param4) {
-            configureTestCastError(param1, param2, param3, param4);
+            configure(param1, param2, param3, param4);
         }
 
-        public void configureTestCastError(String param1, int param2, Class<java.sql.Timestamp> param3, Timestamp param4) {
+        public void configure(String param1, int param2, Class<java.sql.Timestamp> param3, Timestamp param4) {
             JSONObject localParam = new JSONObject();
             localParam.put(param1, param2);
 
@@ -586,7 +482,6 @@ public class TypeUtilsParameterizedTest {
         }
     }
 
-    // test_error
     @RunWith(Parameterized.class)
     public static class TypeUtilsErrorTest {
 
@@ -598,7 +493,7 @@ public class TypeUtilsParameterizedTest {
         public static Collection<Object[]> getTestParameters() {
 
             Object[][] params = {
-                    {"id", 1, C.class}
+                    {"id", 1, C.class} //test_error
             };
 
             return Arrays.asList(params);
@@ -608,7 +503,7 @@ public class TypeUtilsParameterizedTest {
             configureTestError(param1, param2, param3);
         }
 
-        public void configureTestError(String param1, int param2, Class<C> param3){
+        public void configureTestError(String param1, int param2, Class<C> param3) {
             JSONObject localParam = new JSONObject();
             localParam.put(param1, param2);
 
@@ -654,7 +549,6 @@ public class TypeUtilsParameterizedTest {
         }
     }
 
-    // test_error_2
     @RunWith(Parameterized.class)
     public static class TypeUtilsError2Test {
 
@@ -666,17 +560,17 @@ public class TypeUtilsParameterizedTest {
         public static Collection<Object[]> getTestParameters() {
 
             Object[][] params = {
-                    {"id", 1, "f", List.class}
+                {"id", 1, "f", List.class} //test_error_2
             };
 
             return Arrays.asList(params);
         }
 
         public TypeUtilsError2Test(String param1, int param2, String param3, Class<List> param4) throws NoSuchMethodException {
-            configureTestError(param1, param2, param3, param4);
+            configure(param1, param2, param3, param4);
         }
 
-        public void configureTestError(String param1, int param2, String param3, Class<List> param4) throws NoSuchMethodException {
+        public void configure(String param1, int param2, String param3, Class<List> param4) throws NoSuchMethodException {
 
             JSONObject localParam = new JSONObject();
             localParam.put(param1, param2);
