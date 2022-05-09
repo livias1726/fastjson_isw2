@@ -33,4 +33,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=livias1726_fastjson_isw2
+        run: mvn -Dsonar.coverage.jacoco.xmlReportPaths=target/coverage-reports/jacoco-reports/jacoco.xml clean verify sonar:sonar
+        #mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=livias1726_fastjson_isw2
