@@ -26,14 +26,10 @@
         <!-- Coverage -->
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <!--
         <sonar.junit.reportPaths>${project.basedir}/target/coverage-reports/surefire-reports/*.xml</sonar.junit.reportPaths>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/coverage-reports/jacoco-reports/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <sonar.jacoco.reportPath>${project.basedir}/target/coverage-reports/jacoco.exec</sonar.jacoco.reportPath>
-        -->
-        <sonar.junit.reportPaths>${project.basedir}/reports/surefire/*.xml</sonar.junit.reportPaths>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/reports/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.jacoco.reportPath>${project.basedir}/reports/jacoco.exec</sonar.jacoco.reportPath>
+
     </properties>
 
     <profiles>
@@ -47,15 +43,9 @@
                         <version>3.0.0-M4</version>
                         <configuration>
                             <argLine>
-                                -javaagent:jars/jacoco/jacocoagent.jar=destfile=reports/jacoco.exec
-                            <!--
-                            -javaagent:jars/jacoco/jacocoagent.jar=destfile=target/coverage-reports/jacoco.exec
-                            -->
+                                -javaagent:jars/jacoco/jacocoagent.jar=destfile=target/coverage-reports/jacoco.exec
                             </argLine>
-                            <reportsDirectory>${project.basedir}/reports/surefire</reportsDirectory>
-                            <!--
                             <reportsDirectory>${project.basedir}/target/coverage-reports/surefire-reports</reportsDirectory>
-                            -->
                         </configuration>
                     </plugin>
 
@@ -98,12 +88,8 @@
                                     <goal>report</goal>
                                 </goals>
                                 <configuration>
-                                    <dataFile>${project.basedir}/reports/jacoco.exec</dataFile>
-                                    <outputDirectory>${project.basedir}/reports/jacoco</outputDirectory>
-                                    <!--
                                     <dataFile>${project.basedir}/target/coverage-reports/jacoco.exec</dataFile>
                                     <outputDirectory>${project.basedir}/target/coverage-reports/jacoco-reports</outputDirectory>
-                                    -->
                                 </configuration>
                             </execution>
                         </executions>
