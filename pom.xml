@@ -22,16 +22,14 @@
         <!-- Sonar -->
         <sonar.organization>livias1726</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <sonar.java.source>1.8</sonar.java.source>
 
         <!-- Coverage -->
-        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.java.binaries>${project.basedir}/target/classes</sonar.java.binaries>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.junit.reportPaths>target/coverage-reports/surefire-reports/*.xml</sonar.junit.reportPaths>
-        <sonar.coverage.jacoco.xmlReportPaths>target/coverage-reports/jacoco-reports/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.junit.reportPaths>${project.basedir}/target/coverage-reports/surefire-reports/*.xml</sonar.junit.reportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/coverage-reports/jacoco-reports/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.jacoco.reportPath>target/coverage-reports/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.reportPath>${project.basedir}/target/coverage-reports/jacoco.exec</sonar.jacoco.reportPath>
 
     </properties>
 
@@ -48,7 +46,7 @@
                             <argLine>
                                 -javaagent:jars/jacoco/jacocoagent.jar=destfile=target/coverage-reports/jacoco.exec
                             </argLine>
-                            <reportsDirectory>target/coverage-reports/surefire-reports</reportsDirectory>
+                            <reportsDirectory>${project.basedir}/target/coverage-reports/surefire-reports</reportsDirectory>
                         </configuration>
                     </plugin>
 
@@ -68,7 +66,7 @@
                                             <directory>lib</directory>
                                         </resource>
                                     </resources>
-                                    <outputDirectory>target/classes</outputDirectory>
+                                    <outputDirectory>${project.basedir}/target/classes</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
@@ -91,8 +89,8 @@
                                     <goal>report</goal>
                                 </goals>
                                 <configuration>
-                                    <dataFile>target/coverage-reports/jacoco.exec</dataFile>
-                                    <outputDirectory>target/coverage-reports/jacoco-reports</outputDirectory>
+                                    <dataFile>${project.basedir}/target/coverage-reports/jacoco.exec</dataFile>
+                                    <outputDirectory>${project.basedir}/target/coverage-reports/jacoco-reports</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
@@ -112,11 +110,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>${jacoco.version}</version>
         </dependency>
     </dependencies>
 
