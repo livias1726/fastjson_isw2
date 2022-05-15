@@ -27,7 +27,6 @@
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.java.source>1.8</sonar.java.source>
     </properties>
-
     <profiles>
         <profile>
             <id>coverage</id>
