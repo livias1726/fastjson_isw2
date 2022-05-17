@@ -16,18 +16,14 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
 
-        <!-- JaCoCo Properties -->
-        <jacoco.version>0.8.8</jacoco.version>
-
         <!-- Sonar -->
         <sonar.organization>livias1726</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <!-- Coverage -->
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.junit.reportPaths>target/coverage-reports/surefire-reports</sonar.junit.reportPaths>
-        <!--<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>-->
+        <sonar.coverage.jacoco.xmlReportPaths>target/coverage-reports/jacoco-reports</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <profiles>
@@ -41,7 +37,7 @@
                         <version>3.0.0-M4</version>
                         <configuration>
                             <argLine>
-                                -javaagent:jars/jacoco/jacocoagent.jar=destfile=target/jacoco.exec
+                                -javaagent:jars/jacoco/jacocoagent.jar=destfile=target/coverage-reports/jacoco.exec
                             </argLine>
                             <reportsDirectory>target/coverage-reports/surefire-reports</reportsDirectory>
                         </configuration>
@@ -71,7 +67,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco.version}</version>
+                        <version>0.8.7</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
@@ -86,8 +82,8 @@
                                 </goals>
                                 <phase>verify</phase>
                                 <configuration>
-                                    <dataFile>target/jacoco.exec</dataFile>
-                                    <outputDirectory>target/site/jacoco/jacoco.xml</outputDirectory>
+                                    <dataFile>target/coverage-reports/jacoco.exec</dataFile>
+                                    <outputDirectory>target/coverage-reports/jacoco-reports</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
