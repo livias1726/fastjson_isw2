@@ -26,10 +26,8 @@
         <!-- Coverage -->
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.junit.reportPaths>${project.basedir}/target/coverage-reports/surefire-reports/*.xml</sonar.junit.reportPaths>
+        <sonar.junit.reportPaths>${project.basedir}/target/coverage-reports/surefire-reports</sonar.junit.reportPaths>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/coverage-reports/jacoco-reports/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.jacoco.reportPath>${project.basedir}/target/coverage-reports/jacoco.exec</sonar.jacoco.reportPath>
-
     </properties>
 
     <profiles>
