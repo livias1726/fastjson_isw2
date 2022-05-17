@@ -26,8 +26,8 @@
         <!-- Coverage -->
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.junit.reportPaths>${project.basedir}/target/coverage-reports/surefire-reports</sonar.junit.reportPaths>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/coverage-reports/jacoco-reports/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.junit.reportPaths>target/coverage-reports/surefire-reports</sonar.junit.reportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>target/coverage-reports/jacoco-reports/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <profiles>
@@ -64,7 +64,7 @@
                                                 <directory>lib</directory>
                                             </resource>
                                         </resources>
-                                        <outputDirectory>${project.basedir}/target/classes</outputDirectory>
+                                        <outputDirectory>target/classes</outputDirectory>
                                     </configuration>
                                 </execution>
                             </executions>
@@ -87,8 +87,8 @@
                                         <goal>report</goal>
                                     </goals>
                                     <configuration>
-                                        <dataFile>${project.basedir}/target/coverage-reports/jacoco.exec</dataFile>
-                                        <outputDirectory>${project.basedir}/target/coverage-reports/jacoco-reports</outputDirectory>
+                                        <dataFile>target/coverage-reports/jacoco.exec</dataFile>
+                                        <outputDirectory>target/coverage-reports/jacoco-reports/jacoco.xml</outputDirectory>
                                     </configuration>
                                 </execution>
                             </executions>
