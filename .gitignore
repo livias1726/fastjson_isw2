@@ -4,10 +4,4 @@
 
 target/
 
-reports/jacoco/com.*
-reports/jacoco/jacoco-resources/
-reports/jacoco/*.html
-reports/jacoco/*.csv
-reports/surefire/
-
 
