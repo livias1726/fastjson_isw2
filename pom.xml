@@ -78,6 +78,10 @@
                                 <goals>
                                     <goal>prepare-agent</goal>
                                 </goals>
+                                <configuration>
+                                    <destFile>target/coverage-reports/jacoco.exec</destFile>
+                                    <propertyName>surefireArgLine</propertyName>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>report</id>
