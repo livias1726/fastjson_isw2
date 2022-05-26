@@ -2,7 +2,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+@RunWith(Parameterized.class)
 public class OrderedFieldParameterizedTest {
 
     private int expected1;
@@ -10,8 +16,17 @@ public class OrderedFieldParameterizedTest {
     private Class<Model> value1;
     private Feature value2;
 
-    public OrderedFieldParameterizedTest(){
-        configure(1001, "{\"id\":1001}", Model.class, Feature.OrderedField);
+    @Parameterized.Parameters
+    public static Collection<Object[]> getTestParameters(){
+        Object[][] params = {
+                {1001, "{\"id\":1001}", Model.class, Feature.OrderedField}
+        };
+
+        return Arrays.asList(params);
+    }
+
+    public OrderedFieldParameterizedTest(int param1, String param2, Class<Model> param3, Feature param4){
+        configure(param1, param2, param3, param4);
     }
 
     public void configure(int param1, String param2, Class<Model> param3, Feature param4){
