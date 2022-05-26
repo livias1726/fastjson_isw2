@@ -26,9 +26,12 @@
         <!-- Ba-Dua -->
         <badua.reportDir>${coverage.reportDir}/badua-reports</badua.reportDir>
         <badua.agent>-javaagent:jars/badua/ba-dua-agent-rt-0.4.1-SNAPSHOT-all.jar -Doutput.file=${coverage.reportDir}/badua.ser</badua.agent>
-        <badua.cli>
+        <badua.windows.cli>
             mkdir target\coverage-reports\badua-reports | java -jar jars/badua/ba-dua-cli-0.4.1-SNAPSHOT-all.jar report -classes target/test-classes -input ${coverage.reportDir}/badua.ser -xml ${badua.reportDir}/coverage.xml
-        </badua.cli>
+        </badua.windows.cli>
+        <badua.unix.cli>
+            mkdir target/coverage-reports/badua-reports | java -jar jars/badua/ba-dua-cli-0.4.1-SNAPSHOT-all.jar report -classes target/test-classes -input ${coverage.reportDir}/badua.ser -xml ${badua.reportDir}/coverage.xml
+        </badua.unix.cli>
 
         <!-- Surefire -->
         <surefire.reportDir>${coverage.reportDir}/surefire-reports</surefire.reportDir>
@@ -140,7 +143,7 @@
                                     <executable>cmd</executable>
                                     <arguments>
                                         <argument>/C</argument>
-                                        <argument>${badua.cli}</argument>
+                                        <argument>${badua.windows.cli}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -149,7 +152,6 @@
                 </plugins>
             </build>
         </profile>
-        <!--
         <profile>
             <id>unix</id>
             <activation>
@@ -173,7 +175,7 @@
                                 <configuration>
                                     <executable>bash</executable>
                                     <arguments>
-                                        <argument>${badua.cli}</argument>
+                                        <argument>${badua.unix.cli}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -182,7 +184,6 @@
                 </plugins>
             </build>
         </profile>
-        -->
     </profiles>
 
     <dependencies>
