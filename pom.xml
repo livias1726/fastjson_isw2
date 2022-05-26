@@ -149,6 +149,7 @@
                 </plugins>
             </build>
         </profile>
+        <!--
         <profile>
             <id>unix</id>
             <activation>
@@ -181,6 +182,7 @@
                 </plugins>
             </build>
         </profile>
+        -->
     </profiles>
 
     <dependencies>
