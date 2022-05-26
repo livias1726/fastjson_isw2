@@ -49,8 +49,6 @@
 
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.junit.reportPaths>${surefire.reportDir}</sonar.junit.reportPaths>
-        <sonar.jacoco.reportPath>${coverage.reportDir}/jacoco-ut.exec</sonar.jacoco.reportPath>
-        <sonar.jacoco.itReportPath>${coverage.reportDir}/jacoco-it.exec</sonar.jacoco.itReportPath>
         <sonar.coverage.jacoco.xmlReportPaths>${jacoco.reportDir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
