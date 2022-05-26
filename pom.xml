@@ -175,6 +175,7 @@
                                 <configuration>
                                     <executable>bash</executable>
                                     <arguments>
+                                        <argument>-c</argument>
                                         <argument>${badua.unix.cli}</argument>
                                     </arguments>
                                 </configuration>
