@@ -16,18 +16,42 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
 
+        <!-- Utils -->
+        <coverage.reportDir>target/coverage-reports</coverage.reportDir>
+
+        <!-- JaCoCo -->
+        <jacoco.reportDir>${coverage.reportDir}/jacoco-reports</jacoco.reportDir>
+        <jacoco.agent>-javaagent:jars/jacoco/jacocoagent.jar</jacoco.agent>
+
+        <!-- Ba-Dua -->
+        <badua.reportDir>${coverage.reportDir}/badua-reports</badua.reportDir>
+        <badua.agent>-javaagent:jars/badua/ba-dua-agent-rt-0.4.1-SNAPSHOT-all.jar -Doutput.file=${coverage.reportDir}/badua.ser</badua.agent>
+        <badua.cli>java -jar jars/ba-dua-cli-0.4.1-SNAPSHOT-all.jar report -classes target/test-classes -input ${coverage.reportDir}/badua.ser -xml ${badua.reportDir}/coverage.xml</badua.cli>
+
+        <!-- Surefire -->
+        <surefire.reportDir>${coverage.reportDir}/surefire-reports</surefire.reportDir>
+        <surefire.jacoco>${jacoco.agent}=destfile=${coverage.reportDir}/jacoco-ut.exec</surefire.jacoco>
+        <surefire.badua>${badua.agent}</surefire.badua>
+
+        <!-- Failsafe -->
+        <failsafe.jacoco>${jacoco.agent}=destfile=${coverage.reportDir}/jacoco-it.exec</failsafe.jacoco>
+
         <!-- Sonar -->
         <sonar.organization>livias1726</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-        <!-- Coverage -->
         <sonar.sources>lib</sonar.sources>
         <sonar.binaries>target/classes</sonar.binaries>
         <sonar.java.binaries>target/classes</sonar.java.binaries>
 
+        <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.junit.reportPaths>target/coverage-reports/surefire-reports</sonar.junit.reportPaths>
-        <sonar.coverage.jacoco.xmlReportPaths>target/coverage-reports/jacoco-reports</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.junit.reportPaths>${surefire.reportDir}</sonar.junit.reportPaths>
+        <sonar.jacoco.reportPath>${coverage.reportDir}/jacoco-ut.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${coverage.reportDir}/jacoco-it.exec</sonar.jacoco.itReportPath>
+        <sonar.coverage.jacoco.xmlReportPaths>${jacoco.reportDir}</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <profiles>
@@ -41,12 +65,44 @@
                         <version>3.0.0-M4</version>
                         <configuration>
                             <argLine>
-                                -javaagent:jars/jacoco/jacocoagent.jar=destfile=target/coverage-reports/jacoco.exec
+                                ${surefire.jacoco} ${surefire.badua}
                             </argLine>
-                            <reportsDirectory>target/coverage-reports/surefire-reports</reportsDirectory>
+                            <reportsDirectory>${surefire.reportDir}</reportsDirectory>
+                            <properties>
+                                <property>
+                                    <name>listener</name>
+                                    <value>org.sonar.java.jacoco.JUnitListener</value>
+                                </property>
+                            </properties>
                         </configuration>
                     </plugin>
-
+                    <!--
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>3.0.0-M6</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <argLine>
+                                -Xmx1024m -XX:MaxPermSize=256m ${surefire.jacoco}
+                            </argLine>
+                            <properties>
+                                <property>
+                                    <name>listener</name>
+                                    <value>org.sonar.java.jacoco.JUnitListener</value>
+                                </property>
+                            </properties>
+                            <reportsDirectory>${surefire.reportDir}</reportsDirectory>
+                        </configuration>
+                    </plugin>
+                    -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
@@ -74,15 +130,31 @@
                         <version>0.8.7</version>
                         <executions>
                             <execution>
-                                <id>prepare-agent</id>
+                                <id>prepare-ut-agent</id>
+                                <phase>process-test-classes</phase>
                                 <goals>
                                     <goal>prepare-agent</goal>
                                 </goals>
                                 <configuration>
-                                    <destFile>target/coverage-reports/jacoco.exec</destFile>
-                                    <propertyName>surefireArgLine</propertyName>
+                                    <destFile>${sonar.jacoco.reportPath}</destFile>
+                                    <propertyName>jacoco.agent.ut.arg</propertyName>
+                                    <append>true</append>
                                 </configuration>
                             </execution>
+                            <!--
+                            <execution>
+                                <id>prepare-it-agent</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                                <configuration>
+                                    <destFile>${sonar.jacoco.itReportPath}</destFile>
+                                    <propertyName>jacoco.agent.it.arg</propertyName>
+                                    <append>true</append>
+                                </configuration>
+                            </execution>
+                            -->
                             <execution>
                                 <id>report</id>
                                 <goals>
@@ -90,13 +162,33 @@
                                 </goals>
                                 <phase>verify</phase>
                                 <configuration>
-                                    <dataFile>target/coverage-reports/jacoco.exec</dataFile>
-                                    <outputDirectory>target/coverage-reports/jacoco-reports</outputDirectory>
+                                    <dataFile>${sonar.jacoco.ReportPath}</dataFile>
+                                    <outputDirectory>${jacoco.reportDir}</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
-                </plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>badua-cli</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>verify</phase>
+                                <configuration>
+                                    <executable>cmd.exe</executable>
+                                    <commandlineArgs>
+                                        mkdir target/coverage-reports/badua-reports | ${badua.cli}
+                                    </commandlineArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+               </plugins>
             </build>
         </profile>
     </profiles>
@@ -111,6 +203,28 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>br.usp.each.saeg</groupId>
+            <artifactId>ba-dua-core</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.sonar-plugins.java</groupId>
+            <artifactId>sonar-jacoco-listeners</artifactId>
+            <version>${sonar-jacoco-listeners.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.0.0-M6</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
