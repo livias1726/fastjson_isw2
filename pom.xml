@@ -26,7 +26,9 @@
         <!-- Ba-Dua -->
         <badua.reportDir>${coverage.reportDir}/badua-reports</badua.reportDir>
         <badua.agent>-javaagent:jars/badua/ba-dua-agent-rt-0.4.1-SNAPSHOT-all.jar -Doutput.file=${coverage.reportDir}/badua.ser</badua.agent>
-        <badua.cli>java -jar jars/ba-dua-cli-0.4.1-SNAPSHOT-all.jar report -classes target/test-classes -input ${coverage.reportDir}/badua.ser -xml ${badua.reportDir}/coverage.xml</badua.cli>
+        <badua.cli>
+            mkdir target\coverage-reports\badua-reports | java -jar jars/badua/ba-dua-cli-0.4.1-SNAPSHOT-all.jar report -classes target/test-classes -input ${coverage.reportDir}/badua.ser -xml ${badua.reportDir}/coverage.xml
+        </badua.cli>
 
         <!-- Surefire -->
         <surefire.reportDir>${coverage.reportDir}/surefire-reports</surefire.reportDir>
@@ -111,7 +113,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!--
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
@@ -124,15 +125,15 @@
                                 </goals>
                                 <phase>verify</phase>
                                 <configuration>
-                                    <executable>cmd.exe</executable>
-                                    <commandlineArgs>
-                                        mkdir target/coverage-reports/badua-reports | ${badua.cli}
-                                    </commandlineArgs>
+                                    <executable>cmd</executable>
+                                    <arguments>
+                                        <argument>/C</argument>
+                                        <argument>${badua.cli}</argument>
+                                    </arguments>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
-                    -->
                 </plugins>
             </build>
         </profile>
