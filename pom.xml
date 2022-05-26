@@ -34,6 +34,7 @@
         <surefire.badua>${badua.agent}</surefire.badua>
 
         <!-- Failsafe -->
+        <failsafe.reportDir>${coverage.reportDir}/failsafe-reports</failsafe.reportDir>
         <failsafe.jacoco>${jacoco.agent}=destfile=${coverage.reportDir}/jacoco-it.exec</failsafe.jacoco>
 
         <!-- Sonar -->
@@ -65,11 +66,16 @@
                             <reportsDirectory>${surefire.reportDir}</reportsDirectory>
                         </configuration>
                     </plugin>
-                    <!--
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <version>3.0.0-M6</version>
+                        <configuration>
+                            <argLine>
+                                -Xmx1024m -XX:MaxPermSize=256m ${surefire.jacoco}
+                            </argLine>
+                            <reportsDirectory>${failsafe.reportDir}</reportsDirectory>
+                        </configuration>
                         <executions>
                             <execution>
                                 <goals>
@@ -78,20 +84,7 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <argLine>
-                                -Xmx1024m -XX:MaxPermSize=256m ${surefire.jacoco}
-                            </argLine>
-                            <properties>
-                                <property>
-                                    <name>listener</name>
-                                    <value>org.sonar.java.jacoco.JUnitListener</value>
-                                </property>
-                            </properties>
-                            <reportsDirectory>${surefire.reportDir}</reportsDirectory>
-                        </configuration>
                     </plugin>
-                    -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
@@ -125,12 +118,9 @@
                                     <goal>prepare-agent</goal>
                                 </goals>
                                 <configuration>
-                                    <destFile>${sonar.jacoco.reportPath}</destFile>
-                                    <propertyName>jacoco.agent.ut.arg</propertyName>
-                                    <append>true</append>
+                                    <destFile>${coverage.reportDir}/jacoco-ut.exec</destFile>
                                 </configuration>
                             </execution>
-                            <!--
                             <execution>
                                 <id>prepare-it-agent</id>
                                 <phase>pre-integration-test</phase>
@@ -138,12 +128,9 @@
                                     <goal>prepare-agent</goal>
                                 </goals>
                                 <configuration>
-                                    <destFile>${sonar.jacoco.itReportPath}</destFile>
-                                    <propertyName>jacoco.agent.it.arg</propertyName>
-                                    <append>true</append>
+                                    <destFile>${coverage.reportDir}/jacoco-it.exec</destFile>
                                 </configuration>
                             </execution>
-                            -->
                             <execution>
                                 <id>report</id>
                                 <goals>
@@ -151,7 +138,7 @@
                                 </goals>
                                 <phase>verify</phase>
                                 <configuration>
-                                    <dataFile>${sonar.jacoco.ReportPath}</dataFile>
+                                    <dataFile>${coverage.reportDir}/jacoco-ut.exec</dataFile>
                                     <outputDirectory>${jacoco.reportDir}</outputDirectory>
                                 </configuration>
                             </execution>
@@ -209,7 +196,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
             <version>3.0.0-M6</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
