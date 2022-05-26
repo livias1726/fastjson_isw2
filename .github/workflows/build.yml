@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - version_2
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -33,4 +34,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -Pcoverage verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=livias1726_fastjson_isw2
+        run: mvn verify -Pcoverage org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=livias1726_fastjson_isw2
