@@ -59,6 +59,9 @@
     <profiles>
         <profile>
             <id>coverage</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -67,11 +70,12 @@
                         <version>3.0.0-M4</version>
                         <configuration>
                             <argLine>
-                                ${surefire.jacoco} ${surefire.badua}
+                                ${surefire.jacoco} <!--${surefire.badua}-->
                             </argLine>
                             <reportsDirectory>${surefire.reportDir}</reportsDirectory>
                         </configuration>
                     </plugin>
+                    <!--
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
@@ -85,6 +89,8 @@
                             </targetTests>
                         </configuration>
                     </plugin>
+                    -->
+                    <!--
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
@@ -104,6 +110,7 @@
                             </execution>
                         </executions>
                     </plugin>
+                    -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
@@ -155,6 +162,7 @@
                 </plugins>
             </build>
         </profile>
+        <!--
         <profile>
             <id>Windows</id>
             <activation>
@@ -221,6 +229,7 @@
                 </plugins>
             </build>
         </profile>
+        -->
     </profiles>
 
     <dependencies>

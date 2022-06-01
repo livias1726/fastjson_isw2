@@ -87,7 +87,7 @@ public class TypeUtilsParameterizedTest {
         configureUserTest(1L, "panlei", User.class); //test_2, test_3
 
         configureCast(1L, "id", 1, int.class); //test_cast_Integer
-    /*  configureCast(1L, "id", 1, Integer.class); //test_cast_Integer_2
+      /* configureCast(1L, "id", 1, Integer.class); //test_cast_Integer_2
         configureCast(1, "id", 1L, long.class); //test_cast_to_long
         configureCast(1, "id", 1L, Long.class); //test_cast_to_Long
         configureCast(1, "id", (short) 1, short.class); //test_cast_to_short
@@ -121,8 +121,8 @@ public class TypeUtilsParameterizedTest {
         configureCastToSqlDate(null, null); //test_cast_to_SqlDate_null2
         //configureCastToSqlDate(date = new java.sql.Date(System.currentTimeMillis()), date); //test_cast_to_SqlDate_sql_Date2
 
-        configureJSONException("date", 0, java.sql.Date.class); //test_cast_to_SqlDate_error
-        //configureJSONException("value", new A(), B.class); //test_cast_ab_error
+        //configureJSONException("date", 0, java.sql.Date.class); //test_cast_to_SqlDate_error
+        configureJSONException("value", new A(), B.class); //test_cast_ab_error
 
         configureCastToTimestamp(null, null); //test_cast_to_Timestamp_null2
         //configureCastToTimestamp(timestamp = new java.sql.Timestamp(System.currentTimeMillis()), timestamp); //test_cast_to_Timestamp_sql_Timestamp
