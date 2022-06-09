@@ -38,10 +38,6 @@
         <surefire.jacoco>${jacoco.agent}=destfile=${coverage.reportDir}/jacoco-ut.exec</surefire.jacoco>
         <surefire.badua>${badua.agent}</surefire.badua>
 
-        <!-- Failsafe -->
-        <failsafe.reportDir>${coverage.reportDir}/failsafe-reports</failsafe.reportDir>
-        <failsafe.jacoco>${jacoco.agent}=destfile=${coverage.reportDir}/jacoco-it.exec</failsafe.jacoco>
-
         <!-- Sonar -->
         <sonar.organization>livias1726</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -59,9 +55,6 @@
     <profiles>
         <profile>
             <id>coverage</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -70,47 +63,11 @@
                         <version>3.0.0-M4</version>
                         <configuration>
                             <argLine>
-                                ${surefire.jacoco} <!--${surefire.badua}-->
+                                ${surefire.jacoco} ${surefire.badua}
                             </argLine>
                             <reportsDirectory>${surefire.reportDir}</reportsDirectory>
                         </configuration>
                     </plugin>
-                    <!--
-                    <plugin>
-                        <groupId>org.pitest</groupId>
-                        <artifactId>pitest-maven</artifactId>
-                        <version>1.8.0</version>
-                        <configuration>
-                            <targetClasses>
-                                <param>com.alibaba.fastjson.JSON</param>
-                            </targetClasses>
-                            <targetTests>
-                                <param>src/test/java/TypeUtilsParameterizedTest.java</param>
-                            </targetTests>
-                        </configuration>
-                    </plugin>
-                    -->
-                    <!--
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>3.0.0-M6</version>
-                        <configuration>
-                            <argLine>
-                                -Xmx1024m -XX:MaxPermSize=256m ${surefire.jacoco}
-                            </argLine>
-                            <reportsDirectory>${failsafe.reportDir}</reportsDirectory>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
@@ -162,7 +119,6 @@
                 </plugins>
             </build>
         </profile>
-        <!--
         <profile>
             <id>Windows</id>
             <activation>
@@ -229,7 +185,6 @@
                 </plugins>
             </build>
         </profile>
-        -->
     </profiles>
 
     <dependencies>
@@ -243,18 +198,6 @@
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.pitest</groupId>
-            <artifactId>pitest-maven</artifactId>
-            <version>1.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.0.0-M6</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
 </project>
