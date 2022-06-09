@@ -72,22 +72,63 @@ public class TypeUtilsParameterizedTest {
     private ParserConfig value2Error2;
 
     public TypeUtilsParameterizedTest() throws NoSuchMethodException {
-        HashMap map;
-        JSONObject json;
-        long millis;
-        B b;
-        java.sql.Date date;
-        Timestamp timestamp;
-        BigDecimal bd;
-        BigInteger bi;
-
-        configureCastToJavaBean(map = new HashMap(), map, Map.class); //test_0
-        //configureCastToJavaBean(json = new JSONObject(), json, Map.class); //test_1
+        wrapperConfigureCastToJavaBean();
+        wrapperConfigureCast();
+        wrapperConfigureCalendar();
+        wrapperConfigureCastToSqlDate();
+        wrapperConfigureJSONException();
+        wrapperConfigureCastToTimestamp();
 
         configureUserTest(1L, "panlei", User.class); //test_2, test_3
+        configureCastToTimezone(new Timestamp(0), "1970-01-01 08:00:00"); //test_cast_to_Timestamp_1970_01_01_00_00_00
 
+        BigDecimal bd;
+        configureCastToBigDecimal(bd = new BigDecimal("123"), bd); //test_cast_to_BigDecimal_same
+
+        BigInteger bi;
+        configureCastToBigInteger(bi = new BigInteger("123"), bi); //test_cast_to_BigInteger_same
+
+        configureCastArray(Integer[].class, new ArrayList(), null); //test_cast_Array
+        configureNotError("date", -1, java.sql.Timestamp.class, new Timestamp(-1L)); //test_cast_to_Timestamp_not_error
+        configureError("id", 1, C.class); //test_error
+        configureError2("id", 1, "f", List.class); //test_error_2
+    }
+
+    private void wrapperConfigureCastToTimestamp() {
+        configureCastToTimestamp(null, null); //test_cast_to_Timestamp_null2
+
+        /*
+        Timestamp timestamp;
+        configureCastToTimestamp(timestamp = new java.sql.Timestamp(System.currentTimeMillis()), timestamp); //test_cast_to_Timestamp_sql_Timestamp
+         */
+    }
+
+    private void wrapperConfigureJSONException() {
+        configureJSONException("value", new A(), B.class); //test_cast_ab_error
+        //configureJSONException("date", 0, java.sql.Date.class); //test_cast_to_SqlDate_error
+    }
+
+    private void wrapperConfigureCastToSqlDate() {
+        configureCastToSqlDate(null, null); //test_cast_to_SqlDate_null2
+
+        /*
+        java.sql.Date date;
+        configureCastToSqlDate(date = new java.sql.Date(System.currentTimeMillis()), date); //test_cast_to_SqlDate_sql_Date2
+         */
+    }
+
+    private void wrapperConfigureCalendar() {
+        long millis;
+
+        configureCalendar(millis = System.currentTimeMillis(), "date", new java.sql.Date(millis), java.sql.Date.class); //test_cast_to_SqlDate_calendar
+        //configureCalendar(millis = System.currentTimeMillis(), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class); //test_cast_to_Timestamp_calendar
+    }
+
+    private void wrapperConfigureCast() {
         configureCast(1L, "id", 1, int.class); //test_cast_Integer
-      /* configureCast(1L, "id", 1, Integer.class); //test_cast_Integer_2
+
+        /*
+        configureCast(1L, "id", 1, Integer.class); //test_cast_Integer_2
         configureCast(1, "id", 1L, long.class); //test_cast_to_long
         configureCast(1, "id", 1L, Long.class); //test_cast_to_Long
         configureCast(1, "id", (short) 1, short.class); //test_cast_to_short
@@ -112,34 +153,21 @@ public class TypeUtilsParameterizedTest {
         configureCast(null, "date", null, java.sql.Timestamp.class); //test_cast_to_Timestamp_null
         configureCast(new Date(millis = System.currentTimeMillis()), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class); //test_cast_to_Timestamp_util_Date
         configureCast(new java.sql.Date(millis = System.currentTimeMillis()), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class); //test_cast_to_Timestamp_sql_Date
+
+        B b;
         configureCast(b = new B(), "value", b, A.class); //test_cast_ab
-        configureCast(b = new B(), "value", b, IA.class); //test_cast_ab_1 */
+        configureCast(b = new B(), "value", b, IA.class); //test_cast_ab_1
+        */
+    }
 
-        configureCalendar(millis = System.currentTimeMillis(), "date", new java.sql.Date(millis), java.sql.Date.class); //test_cast_to_SqlDate_calendar
-        //configureCalendar(millis = System.currentTimeMillis(), "date", new java.sql.Timestamp(millis), java.sql.Timestamp.class); //test_cast_to_Timestamp_calendar
+    private void wrapperConfigureCastToJavaBean() {
+        HashMap map;
+        configureCastToJavaBean(map = new HashMap(), map, Map.class); //test_0
 
-        configureCastToSqlDate(null, null); //test_cast_to_SqlDate_null2
-        //configureCastToSqlDate(date = new java.sql.Date(System.currentTimeMillis()), date); //test_cast_to_SqlDate_sql_Date2
-
-        //configureJSONException("date", 0, java.sql.Date.class); //test_cast_to_SqlDate_error
-        configureJSONException("value", new A(), B.class); //test_cast_ab_error
-
-        configureCastToTimestamp(null, null); //test_cast_to_Timestamp_null2
-        //configureCastToTimestamp(timestamp = new java.sql.Timestamp(System.currentTimeMillis()), timestamp); //test_cast_to_Timestamp_sql_Timestamp
-
-        configureCastToTimezone(new Timestamp(0), "1970-01-01 08:00:00"); //test_cast_to_Timestamp_1970_01_01_00_00_00
-
-        configureCastToBigDecimal(bd = new BigDecimal("123"), bd); //test_cast_to_BigDecimal_same
-
-        configureCastToBigInteger(bi = new BigInteger("123"), bi); //test_cast_to_BigInteger_same
-
-        configureCastArray(Integer[].class, new ArrayList(), null); //test_cast_Array
-
-        configureNotError("date", -1, java.sql.Timestamp.class, new Timestamp(-1L)); //test_cast_to_Timestamp_not_error
-
-        configureError("id", 1, C.class); //test_error
-
-        configureError2("id", 1, "f", List.class); //test_error_2
+        /*
+        JSONObject json;
+        configureCastToJavaBean(json = new JSONObject(), json, Map.class); //test_1
+         */
     }
 
     public void configureCastToJavaBean(Object param1, Object param2, Class<Map> param3) {
